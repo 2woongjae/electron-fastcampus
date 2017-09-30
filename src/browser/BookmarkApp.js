@@ -126,7 +126,14 @@ class BookmarkApp {
                 dialog.showErrorBox('경고', 'url 은 맞는데, requuest 가 잘못된 것 같아요.');
             }
             if (response) {
-                console.log(response.res.text);
+                const title = await getTitle(response.res.text);
+                this._data.push({
+                    url: arg,
+                    title,
+                    type: this._type
+                });
+                fs.writeFileSync(DATA_PATH, JSON.stringify(this._data));
+                this._update();
             }
         } else {
             dialog.showErrorBox('경고', 'url 이 잘못된 것 같아요.');
