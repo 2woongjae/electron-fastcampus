@@ -1,0 +1,18 @@
+{
+  "name": "electron-bookmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/browser/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.7.8"
+  },
+  "dependencies": {
+    "photonkit": "^0.1.2"
+  }
+}
