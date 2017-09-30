@@ -21,7 +21,9 @@
   },
   "build": {
     "mac": {
-      "target": ["dmg"]
+      "target": [
+        "dmg"
+      ]
     },
     "asar": true
   }
