@@ -54,6 +54,7 @@ class BookmarkApp {
         // ipc 설정
         ipcMain.on('type', this._ipcType.bind(this));
         ipcMain.on('paste', this._ipcPaste.bind(this));
+        ipcMain.on('remove', this._ipcRemove.bind(this));
     }
 
     _getTrayMenu() {
@@ -119,6 +120,29 @@ class BookmarkApp {
 
     _ipcPaste(event, arg) {
         const ignored = this._saveUrl(this._type, arg);
+    }
+
+    _ipcRemove(event, arg) {
+        let index = null;
+
+        // 현재 타입으로 골라내고
+        this._data.filter((item, i) => {
+            item.index = i;
+            return item.type === this._type;
+        }).forEach((item, i) => {
+           if (i === arg) {
+               index = item.index;
+           }
+        });
+
+        // this._data 그 인덱스를 제거
+        this._data.splice(index, 1);
+
+        // 파일로 저장
+        fs.writeFileSync(DATA_PATH, JSON.stringify(this._data));
+
+        // 업데이트
+        this._update();
     }
 
     async _saveUrl(type, copiedUrl) {
