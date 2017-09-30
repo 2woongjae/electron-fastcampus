@@ -1,7 +1,9 @@
-const {app, Tray, Menu, BrowserWindow, ipcMain} = require('electron');
+const {app, Tray, Menu, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const request = require('superagent');
+const getTitle = require('get-title');
 
 const HTML = url.format({
     protocol: 'file',
@@ -51,6 +53,7 @@ class BookmarkApp {
 
         // ipc 설정
         ipcMain.on('type', this._ipcType.bind(this));
+        ipcMain.on('paste', this._ipcPaste.bind(this));
     }
 
     _getTrayMenu() {
@@ -112,6 +115,22 @@ class BookmarkApp {
     _ipcType(event, arg) {
         this._type = arg;
         this._update();
+    }
+
+    async _ipcPaste(event, arg) {
+        if (arg.indexOf('https') > -1 || arg.indexOf('http') > -1) {
+            let response = null;
+            try {
+                response = await request.get(arg);
+            } catch(error) {
+                dialog.showErrorBox('경고', 'url 은 맞는데, requuest 가 잘못된 것 같아요.');
+            }
+            if (response) {
+                console.log(response.res.text);
+            }
+        } else {
+            dialog.showErrorBox('경고', 'url 이 잘못된 것 같아요.');
+        }
     }
 }
 

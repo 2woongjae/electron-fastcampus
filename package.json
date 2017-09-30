@@ -13,6 +13,8 @@
     "electron": "^1.7.8"
   },
   "dependencies": {
-    "photonkit": "^0.1.2"
+    "get-title": "^1.0.1",
+    "photonkit": "^0.1.2",
+    "superagent": "^3.6.1"
   }
 }

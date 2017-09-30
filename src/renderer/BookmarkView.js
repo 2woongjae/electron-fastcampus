@@ -21,7 +21,8 @@ class BookmarkView {
             this._changeType('github');
         });
         document.addEventListener('paste', () => {
-           console.error(clipboard.readText());
+           const text = clipboard.readText();
+           ipcRenderer.send('paste', text);
         });
     }
 
