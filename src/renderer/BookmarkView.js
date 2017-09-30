@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, clipboard} = require('electron');
 
 class BookmarkView {
     constructor() {
@@ -19,6 +19,9 @@ class BookmarkView {
         });
         this._btnGithub.addEventListener('click', () => {
             this._changeType('github');
+        });
+        document.addEventListener('paste', () => {
+           console.error(clipboard.readText());
         });
     }
 

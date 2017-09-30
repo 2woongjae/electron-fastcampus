@@ -97,7 +97,6 @@ class BookmarkApp {
     }
 
     _initData() {
-        // 프로그램 최초 실행 시
         if (!fs.existsSync(DATA_PATH)) {
             fs.writeFileSync(DATA_PATH, JSON.stringify([]));
         }
