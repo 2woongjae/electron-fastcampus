@@ -15,6 +15,7 @@ class BookmarkApp {
         this._tray = null;
         this._win = null;
         this._data = null;
+        this._type = 'home';
         app.on('ready', this._ready.bind(this));
     }
 
@@ -49,6 +50,7 @@ class BookmarkApp {
         this._win.webContents.openDevTools();
 
         // ipc 설정
+        ipcMain.on('type', this._ipcType.bind(this));
     }
 
     _getTrayMenu() {
@@ -104,7 +106,13 @@ class BookmarkApp {
     }
 
     _update() {
-        this._win.webContents.send('data', this._data);
+        const data = this._data.filter(item => item.type === this._type);
+        this._win.webContents.send('data', data);
+    }
+
+    _ipcType(event, arg) {
+        this._type = arg;
+        this._update();
     }
 }
 

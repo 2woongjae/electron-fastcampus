@@ -15,10 +15,10 @@ class BookmarkView {
 
     _bindDomEvent() {
         this._btnHome.addEventListener('click', () => {
-
+            this._changeType('home');
         });
         this._btnGithub.addEventListener('click', () => {
-
+            this._changeType('github');
         });
     }
 
@@ -42,6 +42,17 @@ class BookmarkView {
                 </li>
             `;
         }).join('');
+    }
+
+    _changeType(type) {
+        if (type === 'home') {
+            this._btnHome.classList.add('active');
+            this._btnGithub.classList.remove('active');
+        } else if (type === 'github') {
+            this._btnHome.classList.remove('active');
+            this._btnGithub.classList.add('active');
+        }
+        ipcRenderer.send('type', type);
     }
 }
 
