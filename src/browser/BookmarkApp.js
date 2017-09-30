@@ -1,4 +1,4 @@
-const {app, Tray, Menu, BrowserWindow, ipcMain, dialog} = require('electron');
+const {app, Tray, Menu, BrowserWindow, ipcMain, dialog, clipboard} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
@@ -70,13 +70,13 @@ class BookmarkApp {
                     {
                         label: 'Home',
                         click: () => {
-
+                            const ignored = this._saveUrl('home', clipboard.readText());
                         }
                     },
                     {
                         label: 'Github',
                         click: () => {
-
+                            const ignored = this._saveUrl('github', clipboard.readText());
                         }
                     }
                 ]
@@ -117,23 +117,29 @@ class BookmarkApp {
         this._update();
     }
 
-    async _ipcPaste(event, arg) {
-        if (arg.indexOf('https') > -1 || arg.indexOf('http') > -1) {
+    _ipcPaste(event, arg) {
+        const ignored = this._saveUrl(this._type, arg);
+    }
+
+    async _saveUrl(type, copiedUrl) {
+        if (copiedUrl.indexOf('https') > -1 || copiedUrl.indexOf('http') > -1) {
             let response = null;
             try {
-                response = await request.get(arg);
+                response = await request.get(copiedUrl);
             } catch(error) {
                 dialog.showErrorBox('경고', 'url 은 맞는데, requuest 가 잘못된 것 같아요.');
             }
             if (response) {
                 const title = await getTitle(response.res.text);
                 this._data.push({
-                    url: arg,
+                    url: copiedUrl,
                     title,
-                    type: this._type
+                    type
                 });
                 fs.writeFileSync(DATA_PATH, JSON.stringify(this._data));
-                this._update();
+                if (type === this._type) {
+                    this._update();
+                }
             }
         } else {
             dialog.showErrorBox('경고', 'url 이 잘못된 것 같아요.');
