@@ -79,6 +79,12 @@ class BookmarkApp {
                         click: () => {
                             const ignored = this._saveUrl('github', clipboard.readText());
                         }
+                    },
+                    {
+                        label: 'Video',
+                        click: () => {
+                            const ignored = this._saveUrl('video', clipboard.readText());
+                        }
                     }
                 ]
             },

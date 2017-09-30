@@ -4,6 +4,7 @@ class BookmarkView {
     constructor() {
         this._btnHome = document.querySelector('#btn_home');
         this._btnGithub = document.querySelector('#btn_github');
+        this._btnVideo = document.querySelector('#btn_video');
         this._dataDom = document.querySelector('#data');
 
         // DOM 이벤트에 함수를 바인딩
@@ -19,6 +20,9 @@ class BookmarkView {
         });
         this._btnGithub.addEventListener('click', () => {
             this._changeType('github');
+        });
+        this._btnVideo.addEventListener('click', () => {
+            this._changeType('video');
         });
         document.addEventListener('paste', () => {
            const text = clipboard.readText();
@@ -54,9 +58,15 @@ class BookmarkView {
         if (type === 'home') {
             this._btnHome.classList.add('active');
             this._btnGithub.classList.remove('active');
+            this._btnVideo.classList.remove('active');
         } else if (type === 'github') {
             this._btnHome.classList.remove('active');
             this._btnGithub.classList.add('active');
+            this._btnVideo.classList.remove('active');
+        } else if (type === 'video') {
+            this._btnHome.classList.remove('active');
+            this._btnGithub.classList.remove('active');
+            this._btnVideo.classList.add('active');
         }
         ipcRenderer.send('type', type);
     }
