@@ -65,6 +65,7 @@ class BookmarkView {
         const removeDoms = document.querySelectorAll('.icon-trash');
         removeDoms.forEach((dom, index) => {
            dom.addEventListener('click', () => {
+               console.error(index);
                ipcRenderer.send('remove', index);
            });
         });

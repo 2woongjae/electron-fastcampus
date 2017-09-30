@@ -49,7 +49,7 @@ class BookmarkApp {
             this._win.hide();
         });
         this._win.loadURL(HTML);
-        this._win.webContents.openDevTools();
+        // this._win.webContents.openDevTools();
 
         // ipc 설정
         ipcMain.on('type', this._ipcType.bind(this));
